@@ -78,11 +78,6 @@ public class BothWayProgressBar extends View {
         invalidate();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
     public interface OnProgressEndListener {
         void onProgressEndListener();
     }
