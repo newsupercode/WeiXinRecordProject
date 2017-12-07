@@ -22,7 +22,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback, View.OnTouchListener, BothWayProgressBar.OnProgressEndListener {
     private SurfaceView sufaceView;
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private int LISTENER_START = 200;
     private int cameraPosition = 0;
     private ImageView btn_switch_camera;
+    private boolean isfore=false;
 
 
     @Override
@@ -92,15 +92,10 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         btn_switch_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cameraPosition == 0) {
-                    cameraPosition = 1;
-                } else if (cameraPosition == 1) {
-                    cameraPosition = 0;
-
-                }
-                Log.e("TAGD", "cameraPosition====" + cameraPosition);
+                Log.e("TAGD", "isfore====" + isfore);
                 change();
                 startPreview(surfaceHolder);
+
             }
         });
 
@@ -159,16 +154,16 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     //开启预览
     private void startPreview(SurfaceHolder surfaceHolder) {
-//        if (cameraPosition == 1) {//后置
-//            if (camera == null) {
-//                camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-//            }
-//        } else {
-//
-//        }
-        if (camera == null) {
-            camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+        if (!isfore) {//后置
+            if (camera == null) {
+                camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+            }
+        } else {
+            if (camera == null) {
+                camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            }
         }
+
         if (mediaRecorder == null) {
             mediaRecorder = new MediaRecorder();
 
@@ -177,17 +172,18 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             camera.setDisplayOrientation(90);
             try {
                 camera.setPreviewDisplay(surfaceHolder);
-                Camera.Parameters parameters = camera.getParameters();
-                //实现Camera自动对焦
-                List<String> focusModes = parameters.getSupportedFocusModes();
-                if (focusModes != null) {
-                    for (String mode : focusModes) {
-                        mode.contains("continuous-video");
-                        parameters.setFocusMode("continuous-video");
-                    }
-                }
-                camera.setParameters(parameters);
+//                Camera.Parameters parameters = camera.getParameters();
+//                //实现Camera自动对焦
+//                List<String> focusModes = parameters.getSupportedFocusModes();
+//                if (focusModes != null) {
+//                    for (String mode : focusModes) {
+//                        mode.contains("continuous-video");
+//                        parameters.setFocusMode("continuous-video");
+//                    }
+//                }
+//                camera.setParameters(parameters);
                 camera.startPreview();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -377,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         for (int i = 0; i < cameraCount; i++) {
             Camera.getCameraInfo(i, cameraInfo);//得到每一个摄像头的信息
-            if (cameraPosition == 1) {
+            if (!isfore) {
                 //现在是后置，变更为前置
                 if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
                     camera.stopPreview();//停掉原来摄像头的预览
@@ -390,7 +386,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         e.printStackTrace();
                     }
                     camera.startPreview();//开始预览
-                    cameraPosition = 0;
+//                    cameraPosition = 0;
+                    isfore=true;
                     break;
                 }
             } else {
@@ -407,7 +404,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                         e.printStackTrace();
                     }
                     camera.startPreview();//开始预览
-                    cameraPosition = 1;
+//                    cameraPosition = 1;
+                    isfore=false;
                     break;
                 }
             }
