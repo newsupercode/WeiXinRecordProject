@@ -78,6 +78,10 @@ public class BothWayProgressBar extends View {
         invalidate();
     }
 
+    public void setOnProgressEndListener(OnProgressEndListener onProgressEndListener){
+        mOnProgressEndListener=onProgressEndListener;
+
+    }
     public interface OnProgressEndListener {
         void onProgressEndListener();
     }

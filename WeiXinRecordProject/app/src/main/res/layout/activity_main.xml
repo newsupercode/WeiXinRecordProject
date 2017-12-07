@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/iv_dismiss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
@@ -45,12 +45,21 @@
 
         <TextView
             android:id="@+id/tv_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:background="@mipmap/mic_normal_yuan" />
 
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/btn_switch_camera"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:onClick="onClick"
+        android:src="@mipmap/mic_camare" />
 </RelativeLayout>
